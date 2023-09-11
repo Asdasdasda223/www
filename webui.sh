@@ -217,7 +217,7 @@ prepare_tcmalloc() {
     fi
 }
 
-KEEP_GOING=1
+KEEP_GOING=0
 export SD_WEBUI_RESTART=tmp/restart
 while [[ "$KEEP_GOING" -eq "1" ]]; do
     if [[ ! -z "${ACCELERATE}" ]] && [ ${ACCELERATE}="True" ] && [ -x "$(command -v accelerate)" ]; then
@@ -231,7 +231,7 @@ while [[ "$KEEP_GOING" -eq "1" ]]; do
         printf "Launching launch.py..."
         printf "\n%s\n" "${delimiter}"
         prepare_tcmalloc
-        "${python_cmd}" -u "${LAUNCH_SCRIPT}" "--enable-insecure-extension-access --share --disable-safe-unpickle --theme dark --no-hashing --xformers --ngrok-region eu --ngrok hatmiku $@"
+        "${python_cmd}" -u "${LAUNCH_SCRIPT}" "$@"
     fi
 
     if [[ ! -f tmp/restart ]]; then
