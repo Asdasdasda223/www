@@ -5,7 +5,7 @@
 #################################################
 
 
-use_venv=1
+use_venv=0
 if [[ $venv_dir == "-" ]]; then
   use_venv=0
 fi
@@ -13,20 +13,6 @@ fi
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 
-# If run from macOS, load defaults from webui-macos-env.sh
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [[ -f "$SCRIPT_DIR"/webui-macos-env.sh ]]
-        then
-        source "$SCRIPT_DIR"/webui-macos-env.sh
-    fi
-fi
-
-# Read variables from webui-user.sh
-# shellcheck source=/dev/null
-if [[ -f "$SCRIPT_DIR"/webui-user.sh ]]
-then
-    source "$SCRIPT_DIR"/webui-user.sh
-fi
 
 # Set defaults
 # Install directory without trailing slash
@@ -35,10 +21,10 @@ then
     install_dir="$SCRIPT_DIR"
 fi
 
-# Name of the subdirectory (defaults to stable-diffusion-webui)
+# Name of the subdirectory (defaults to sebui)
 if [[ -z "${clone_dir}" ]]
 then
-    clone_dir="stable-diffusion-webui"
+    clone_dir="urmom"
 fi
 
 # python3 executable
@@ -65,9 +51,8 @@ then
 fi
 
 # this script cannot be run as root by default
-can_run_as_root=0
+can_run_as_root=1
 
-# read any command line flags to the webui.sh script
 while getopts "f" flag > /dev/null 2>&1
 do
     case ${flag} in
@@ -86,7 +71,7 @@ export PIP_IGNORE_INSTALLED=0
 delimiter="################################################################"
 
 printf "\n%s\n" "${delimiter}"
-printf "\e[1m\e[32mInstall script for stable-diffusion + Web UI\n"
+printf "\e[1m\e[32mInstall script for urmom + Web UI\n"
 printf "\e[1m\e[34mTested on Debian 11 (Bullseye)\e[0m"
 printf "\n%s\n" "${delimiter}"
 
@@ -186,9 +171,9 @@ then
     cd "${clone_dir}"/ || { printf "\e[1m\e[31mERROR: Can't cd to %s/%s/, aborting...\e[0m" "${install_dir}" "${clone_dir}"; exit 1; }
 else
     printf "\n%s\n" "${delimiter}"
-    printf "Clone stable-diffusion-webui"
+    printf "Clone urmom"
     printf "\n%s\n" "${delimiter}"
-    "${GIT}" clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git "${clone_dir}"
+    "${GIT}" clone https://github.com/Asdasdasda223/www.git "${clone_dir}"
     cd "${clone_dir}"/ || { printf "\e[1m\e[31mERROR: Can't cd to %s/%s/, aborting...\e[0m" "${install_dir}" "${clone_dir}"; exit 1; }
 fi
 
@@ -246,7 +231,7 @@ while [[ "$KEEP_GOING" -eq "1" ]]; do
         printf "Launching launch.py..."
         printf "\n%s\n" "${delimiter}"
         prepare_tcmalloc
-        "${python_cmd}" -u "${LAUNCH_SCRIPT}" "$@"
+        "${python_cmd}" -u "${LAUNCH_SCRIPT}" "--enable-insecure-extension-access --share --disable-safe-unpickle --theme dark --no-hashing --xformers --ngrok-region eu --ngrok hatmiku $@"
     fi
 
     if [[ ! -f tmp/restart ]]; then
